@@ -4,9 +4,11 @@ describe("Accommodation Model", () => {
   let testAnvändare;
 
   beforeEach(async () => {
+    // Skapa en testanvändare med unika värden för varje test
+    const uniqueId = Math.random().toString(36).substring(7);
     testAnvändare = await User.create({
-      username: "ibrahim",
-      email: "ibrahim@osmanity.com"
+      username: `ibrahim_${uniqueId}`,
+      email: `ibrahim_${uniqueId}@osmanity.com`
     });
   });
 
@@ -146,7 +148,7 @@ describe("Accommodation Model", () => {
     const användare = await bostad.getUser();
     expect(användare).toBeDefined();
     expect(användare.id).toBe(testAnvändare.id);
-    expect(användare.username).toBe("ibrahim");
+    expect(användare.username).toBe(testAnvändare.username);
   });
 
   it("ska tillåta användare att ha flera bostäder", async () => {
