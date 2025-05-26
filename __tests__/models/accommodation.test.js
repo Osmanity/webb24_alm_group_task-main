@@ -146,7 +146,7 @@ describe("Accommodation Model", () => {
     const användare = await bostad.getUser();
     expect(användare).toBeDefined();
     expect(användare.id).toBe(testAnvändare.id);
-    expect(användare.username).toBe("testanvändare");
+    expect(användare.username).toBe("ibrahim");
   });
 
   it("ska tillåta användare att ha flera bostäder", async () => {
