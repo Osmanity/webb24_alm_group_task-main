@@ -1,6 +1,10 @@
 const express = require("express");
 const sequelize = require("./config/database");
 const UserRouter = require("./routes/User");
+const AccommodationRouter = require("./routes/Accommodation");
+
+// Import models to set up associations
+require("./models");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,6 +29,7 @@ testConnection();
 
 // Routes
 app.use("/users", UserRouter);
+app.use("/accommodations", AccommodationRouter);
 
 // Start server
 app.listen(port, () => {
