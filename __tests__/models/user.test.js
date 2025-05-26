@@ -121,5 +121,34 @@ describe("User Model", () => {
       await expect(användare.validate()).rejects.toThrow();
     }
   });
+
+  it("ska skapa användare med giltig profilbild-URL", async () => {
+    const användare = await User.create({
+      username: "användare_med_bild",
+      email: "bild@test.com",
+      profileImageUrl: "https://example.com/profil.jpg"
+    });
+
+    expect(användare.profileImageUrl).toBe("https://example.com/profil.jpg");
+  });
+
+  it("ska tillåta null för profilbild-URL", async () => {
+    const användare = await User.create({
+      username: "användare_utan_bild",
+      email: "ingen_bild@test.com"
+    });
+
+    expect(användare.profileImageUrl).toBeUndefined();
+  });
+
+  it("ska validera profilbild-URL format", async () => {
+    const användare = User.build({
+      username: "testanvändare",
+      email: "test@test.com",
+      profileImageUrl: "ogiltig-url"
+    });
+
+    await expect(användare.validate()).rejects.toThrow();
+  });
 });
 

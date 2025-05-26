@@ -24,6 +24,13 @@ const User = sequelize.define("User", {
       notEmpty: true,
     },
   },
+  profileImageUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isUrl: true,
+    },
+  },
 });
 
 module.exports = User;
