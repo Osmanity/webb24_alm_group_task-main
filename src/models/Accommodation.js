@@ -59,7 +59,7 @@ const Accommodation = sequelize.define("Accommodation", {
       model: 'Users',
       key: 'id',
     },
-    onDelete: 'CASCADE',
+    onDelete: 'CASCADE', // Accomodation model ska CASCADE-raderas när användaren raderas (behöver tester)
   },
 });
 

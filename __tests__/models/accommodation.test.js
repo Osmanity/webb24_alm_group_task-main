@@ -181,4 +181,62 @@ describe("Accommodation Model", () => {
     expect(bostäder[0].userId).toBe(testAnvändare.id);
     expect(bostäder[1].userId).toBe(testAnvändare.id);
   });
+
+  it("ska CASCADE-radera bostäder när användare raderas", async () => {
+    // Skapa bostäder kopplade till användaren
+    await Accommodation.create({
+      address: "Testgatan 123",
+      city: "Stockholm",
+      country: "Sverige",
+      postalCode: "12345",
+      rent: 15000,
+      rooms: 3,
+      userId: testAnvändare.id
+    });
+
+    await Accommodation.create({
+      address: "Andra gatan 456",
+      city: "Göteborg",
+      country: "Sverige",
+      postalCode: "54321",
+      rent: 12000,
+      rooms: 2,
+      userId: testAnvändare.id
+    });
+
+    // Kontrollera att bostäderna finns
+    let bostäder = await Accommodation.findAll({
+      where: { userId: testAnvändare.id }
+    });
+    expect(bostäder).toHaveLength(2);
+
+    // Radera användaren
+    await testAnvändare.destroy();
+
+    // Kontrollera att bostäderna också raderades
+    bostäder = await Accommodation.findAll({
+      where: { userId: testAnvändare.id }
+    });
+    expect(bostäder).toHaveLength(0);
+  });
+
+  it("ska inte påverka bostäder utan userId när användare raderas", async () => {
+    // Skapa bostad utan userId
+    const bostad = await Accommodation.create({
+      address: "Oberoende gatan 789",
+      city: "Malmö",
+      country: "Sverige",
+      postalCode: "98765",
+      rent: 10000,
+      rooms: 1
+    });
+
+    // Radera användaren
+    await testAnvändare.destroy();
+
+    // Kontrollera att bostaden utan userId fortfarande finns
+    const kvarstående = await Accommodation.findByPk(bostad.id);
+    expect(kvarstående).toBeDefined();
+    expect(kvarstående.address).toBe("Oberoende gatan 789");
+  });
 }); 
