@@ -13,12 +13,13 @@ RUN npm ci --only=production
 # Copy source code
 COPY src/ ./src/
 
-# Create directory for SQLite database
-RUN mkdir -p /app/data
-
-# Set environment variables
+# Set environment variables for PostgreSQL
 ENV NODE_ENV=production
-ENV DB_PATH=/app/data/database.sqlite
+ENV DB_HOST=postgres
+ENV DB_PORT=5432
+ENV DB_USER=postgres
+ENV DB_PASSWORD=password
+ENV DB_NAME=webb24_alm_db
 ENV PORT=3000
 
 # Expose port
